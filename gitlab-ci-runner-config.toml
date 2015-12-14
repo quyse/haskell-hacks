@@ -1,0 +1,13 @@
+concurrent = 1
+
+[[runners]]
+  url = "https://gitlab.com/ci"
+  token = "TOKENTOKENTOKEN"
+  tls-skip-verify = false
+  tls-ca-file = ""
+  name = "NAMENAMENAME"
+  executor = "docker"
+  [runners.docker]
+    image = "quyse/pre-haskell-ghcjs-build:latest"
+    privileged = false
+    volumes = ["/srv/gitlab-runner/cache/stack:/root/.stack"]
