@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# make temp copy of stack.yaml
+YAMLJS=$(mktemp --tmpdir stack-ghcjs.yaml.XXX)
+cp stack.yaml $YAMLJS
+
+# append ghcjs compiler info
+echo -e "extra-deps:\n- ghcjs-dom-0.2.3.0\ncompiler: ghcjs-0.2.0.20151029_ghc-7.10.2\ncompiler-check: match-exact\nsetup-info:\n  ghcjs:\n    source:\n      ghcjs-0.2.0.20151029_ghc-7.10.2:\n        url: \"https://github.com/nrolland/ghcjs/releases/download/v0.2.0.20151029/ghcjs-0.2.0.20151029.tar.gz\"" >> $YAMLJS
+
+# call stack
+stack --stack-yaml $YAMLJS $*
