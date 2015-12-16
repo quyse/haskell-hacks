@@ -51,8 +51,8 @@ RUN stack install cabal-install
 ENV PATH=/home/gitlab-runner/.local/bin:$PATH
 RUN stack exec ghcjs-boot -- --dev
 
+# add cabaljs script
+COPY cabaljs /home/gitlab-runner/.local/bin/cabaljs
+
 # volume
 VOLUME ["/home/gitlab-runner"]
-
-# add stackjs script
-COPY stackjs /usr/bin/stackjs
