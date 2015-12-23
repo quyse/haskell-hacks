@@ -4,14 +4,15 @@
 
 FROM ubuntu:14.04
 
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y ca-certificates wget apt-transport-https vim nano
+RUN echo force-update-1 \
+	apt-get update -y && \
+	apt-get upgrade -y && \
+	apt-get install -y ca-certificates wget apt-transport-https vim nano
 
 RUN echo "deb https://packages.gitlab.com/runner/gitlab-ci-multi-runner/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/runner_gitlab-ci-multi-runner.list && \
-    wget -q -O - https://packages.gitlab.com/gpg.key | apt-key add - && \
-    apt-get update -y && \
-    apt-get install -y gitlab-ci-multi-runner
+	wget -q -O - https://packages.gitlab.com/gpg.key | apt-key add - && \
+	apt-get update -y && \
+	apt-get install -y gitlab-ci-multi-runner
 
 ADD entrypoint /
 RUN chmod +x /entrypoint
@@ -41,18 +42,11 @@ USER gitlab-runner
 WORKDIR /home/gitlab-runner
 
 # install ghc
-RUN stack setup ghc-7.10.2
+RUN stack setup ghc-7.10.3
 
 # install ghcjs
-
-RUN git clone https://github.com/ghcjs/ghcjs.git
-RUN cd ghcjs && stack install
-RUN stack install cabal-install
-ENV PATH=/home/gitlab-runner/.local/bin:$PATH
-RUN stack exec ghcjs-boot -- --dev
-
-# add cabaljs script
-COPY cabaljs /home/gitlab-runner/.local/bin/cabaljs
+COPY ghcjs-setup.yaml ghcjs-setup.yaml
+RUN stack setup --stack-yaml ghcjs-setup.yaml
 
 # volume
 VOLUME ["/home/gitlab-runner"]
