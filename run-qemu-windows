@@ -1,0 +1,4 @@
+#!/bin/sh
+# script to run Windows QEMU for CI
+
+qemu-system-x86_64 -enable-kvm -smp 4 -m 8G -vga std -daemonize -hda hdd.img -usbdevice tablet -vnc :2
