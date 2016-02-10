@@ -41,6 +41,9 @@ RUN curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --s
 # install latest SDL
 RUN curl -O https://www.libsdl.org/release/SDL2-2.0.3.tar.gz && tar xzvf SDL2-2.0.3.tar.gz && cd SDL2-2.0.3 && ./configure --prefix=/usr && make && make install && cd .. && rm -r SDL2-2.0.3*
 
+# add local bin to profile
+RUN echo -e "#\!/bin/sh/\nexport PATH=\$PATH:$HOME/.local/bin" > /etc/profile.d/localbin.sh
+
 # following installations doesn't require root
 USER gitlab-runner
 WORKDIR /home/gitlab-runner
@@ -51,6 +54,9 @@ RUN stack setup ghc-7.10.3
 # install ghcjs
 COPY ghcjs-setup.yaml ghcjs-setup.yaml
 RUN stack setup --stack-yaml ghcjs-setup.yaml
+
+# install hscolour for haddocks
+RUN stack install hscolour
 
 # volume
 VOLUME ["/home/gitlab-runner"]
