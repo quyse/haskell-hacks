@@ -2,7 +2,7 @@
 # first part has been copied and adapted from https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/raw/master/dockerfiles/ubuntu/Dockerfile
 # changes: creation of volume /home/gitlab-runner is moved to end, in order to allow installing things into this directory
 # building:
-# sudo docker build -f haskell-build-ghcjs-runner.dockerfile -t haskell-build-ghcjs-runner .
+# sudo docker build -t haskell-build-ghcjs-runner .
 # running:
 # sudo docker run -d --name gitlab-runner --restart always -u root -v /srv/gitlab-runner/config:/etc/gitlab-runner haskell-build-ghcjs-runner
 
