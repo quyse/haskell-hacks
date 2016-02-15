@@ -8,7 +8,7 @@
 
 FROM ubuntu:14.04
 
-RUN echo force-update-1 \
+RUN echo force-update-2 && \
 	apt-get update -y && \
 	apt-get upgrade -y && \
 	apt-get install -y ca-certificates wget apt-transport-https vim nano
@@ -42,7 +42,7 @@ RUN curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --s
 RUN curl -O https://www.libsdl.org/release/SDL2-2.0.3.tar.gz && tar xzvf SDL2-2.0.3.tar.gz && cd SDL2-2.0.3 && ./configure --prefix=/usr && make && make install && cd .. && rm -r SDL2-2.0.3*
 
 # add local bin to profile
-RUN echo -e "#\!/bin/sh/\nexport PATH=\$PATH:$HOME/.local/bin" > /etc/profile.d/localbin.sh
+RUN echo -e '#!/bin/sh\nexport PATH=$PATH:'"$HOME"'/.local/bin' > /etc/profile.d/localbin.sh
 
 # following installations doesn't require root
 USER gitlab-runner
