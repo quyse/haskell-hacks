@@ -1,0 +1,47 @@
+# building:
+# sudo docker build -t haskell-build-ghcjs-runner .
+# running:
+# sudo docker run -d --name gitlab-runner --restart always -u root -v /srv/gitlab-runner/config:/etc/gitlab-runner haskell-build-ghcjs-runner
+
+FROM base/archlinux
+
+RUN pacman -Sy --noconfirm archlinux-keyring
+RUN pacman -Su --noconfirm
+RUN pacman-db-upgrade
+RUN pacman -S --noconfirm autoconf gcc make alex happy git binutils ghc stack sdl2 automake nodejs sudo fakeroot
+
+# install gitlab-ci-multi-runner
+RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64
+RUN chmod +x /usr/bin/gitlab-ci-multi-runner
+RUN useradd -m -s /bin/bash gitlab-runner
+
+# libtinfo from AUR
+RUN git clone https://aur.archlinux.org/libtinfo.git \
+	&& chmod a+rw libtinfo \
+	&& cd libtinfo \
+	&& sudo -u nobody makepkg -c \
+	&& pacman -U --noconfirm libtinfo-*.pkg.tar.xz \
+	&& cd .. \
+	&& rm -rf libtinfo
+
+# install old nodejs (needed for ghcjs)
+# RUN curl -OL https://archive.archlinux.org/packages/n/nodejs/nodejs-0.12.7-1-x86_64.pkg.tar.xz \
+#	&& pacman -U --noconfirm nodejs-0.12.7-1-x86_64.pkg.tar.xz \
+#	&& rm nodejs-0.12.7-1-x86_64.pkg.tar.xz
+
+# add local bin to profile
+RUN echo -e '#!/bin/sh\nexport PATH=$PATH:'"$HOME"'/.local/bin' > /etc/profile.d/localbin.sh
+
+# following installations doesn't require root
+USER gitlab-runner
+WORKDIR /home/gitlab-runner
+
+# install ghcjs
+COPY ghcjs-setup.yaml ghcjs-setup.yaml
+RUN stack setup --stack-yaml ghcjs-setup.yaml
+
+# install hscolour for haddocks
+RUN stack install hscolour
+
+# volume
+VOLUME ["/home/gitlab-runner"]
