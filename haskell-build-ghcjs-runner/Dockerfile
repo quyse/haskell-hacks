@@ -8,7 +8,7 @@
 
 FROM ubuntu:14.04
 
-RUN echo force-update-2 && \
+RUN echo force-update-3 && \
 	apt-get update -y && \
 	apt-get upgrade -y && \
 	apt-get install -y ca-certificates wget apt-transport-https vim nano
@@ -42,7 +42,7 @@ RUN curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --s
 RUN curl -O https://www.libsdl.org/release/SDL2-2.0.3.tar.gz && tar xzvf SDL2-2.0.3.tar.gz && cd SDL2-2.0.3 && ./configure --prefix=/usr && make && make install && cd .. && rm -r SDL2-2.0.3*
 
 # add local bin to profile
-RUN echo -e '#!/bin/sh\nexport PATH=$PATH:'"$HOME"'/.local/bin' > /etc/profile.d/localbin.sh
+RUN /bin/echo -e '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin' > /etc/profile.d/localbin.sh
 
 # following installations doesn't require root
 USER gitlab-runner
@@ -57,6 +57,9 @@ RUN stack setup --stack-yaml ghcjs-setup.yaml
 
 # install hscolour for haddocks
 RUN stack install hscolour
+
+# hack: link hsc2hs from ghc to ghcjs, otherwise CPP will not work in ghcjs
+RUN ln -s /home/gitlab-runner/.stack/programs/x86_64-linux/ghc-7.10.3/bin/hsc2hs /home/gitlab-runner/.stack/programs/x86_64-linux/ghcjs-0.2.0.20151029_ghc-7.10.2/bin/hsc2hs
 
 # volume
 VOLUME ["/home/gitlab-runner"]
