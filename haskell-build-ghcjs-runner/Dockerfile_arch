@@ -1,7 +1,7 @@
 # building:
 # sudo docker build -t haskell-build-ghcjs-runner-arch -f Dockerfile_arch .
 # running:
-# sudo docker run -d --name gitlab-runner-arch --restart always -u root -v /srv/gitlab-runner/config:/etc/gitlab-runner haskell-build-ghcjs-runner-arch
+# sudo docker run -d --name gitlab-runner --restart always -u root -v /srv/gitlab-runner/config:/etc/gitlab-runner haskell-build-ghcjs-runner-arch
 
 FROM base/archlinux
 

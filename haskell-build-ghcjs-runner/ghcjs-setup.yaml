@@ -1,8 +1,7 @@
-resolver: lts-5.0
-compiler: ghcjs-0.2.0.20151029_ghc-7.10.2
-compiler-check: match-exact
+resolver: lts-5.5
+compiler: ghcjs-0.2.0_ghc-7.10.3
 setup-info:
   ghcjs:
     source:
-      ghcjs-0.2.0.20151029_ghc-7.10.2:
-        url: "https://github.com/nrolland/ghcjs/releases/download/v0.2.0.20151029/ghcjs-0.2.0.20151029.tar.gz"
+      ghcjs-0.2.0_ghc-7.10.3:
+        url: "http://ghcjs.luite.com/master.tar.gz"
