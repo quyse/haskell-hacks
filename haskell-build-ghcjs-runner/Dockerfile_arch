@@ -3,6 +3,8 @@
 # running:
 # sudo docker run -d --name gitlab-runner --restart always -u root -v /srv/gitlab-runner/config:/etc/gitlab-runner haskell-build-ghcjs-runner-arch
 
+# post install: add -fno-warn-tabs to .stack/programs/*/ghcjs-*/bin/ghcjs
+
 FROM base/archlinux
 
 RUN pacman -Sy --noconfirm archlinux-keyring
