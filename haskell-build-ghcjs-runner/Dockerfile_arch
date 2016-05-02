@@ -8,7 +8,7 @@ FROM base/archlinux
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -Su --noconfirm
 RUN pacman-db-upgrade
-RUN pacman -S --noconfirm autoconf gcc make alex happy git binutils pkg-config ghc stack sdl2 automake nodejs npm sudo fakeroot
+RUN pacman -S --noconfirm autoconf gcc make alex happy git binutils pkg-config ghc stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot
 
 # install gitlab-ci-multi-runner
 RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64
