@@ -13,9 +13,9 @@ RUN pacman-db-upgrade
 RUN pacman -S --noconfirm autoconf gcc make alex happy git binutils pkg-config ghc stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch
 
 # install gitlab-ci-multi-runner
-RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64
-RUN chmod +x /usr/bin/gitlab-ci-multi-runner
-RUN useradd -m -s /bin/bash gitlab-runner
+RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64 \
+	&& chmod +x /usr/bin/gitlab-ci-multi-runner \
+	&& useradd -m -s /bin/bash gitlab-runner
 
 # ncurses5-compat-libs for libtinfo-5
 # using own copy of PKGBUILD as one on AUR is broken
@@ -70,6 +70,12 @@ RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-7.10.3/bin/ghcjs < ghcjs.
 
 # install hscolour for haddocks, and hlint
 RUN stack install hscolour hlint
+
+# install butler
+RUN curl -Lo /home/gitlab-runner/.local/bin/butler https://dl.itch.ovh/butler/linux-amd64/head/butler \
+	&& chmod +x /home/gitlab-runner/.local/bin/butler
+# copy butler credentials
+COPY butler_creds /home/gitlab-runner/.config/itch/butler_creds
 
 # finalize
 CMD ["gitlab-ci-multi-runner", "run", "--user=gitlab-runner", "--working-directory=/home/gitlab-runner"]
