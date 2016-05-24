@@ -1,0 +1,15 @@
+image: docker:git
+services:
+- "docker:dind"
+
+before_script:
+- "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com"
+
+variables:
+  REPO: registry.gitlab.com/quyse/haskell-hacks
+
+build:
+  stage: build
+  script:
+    - "docker build -t $REPO -f Dockerfile_arch ."
+    - "docker push $REPO:latest"
