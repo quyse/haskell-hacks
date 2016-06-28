@@ -17,7 +17,7 @@ RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-down
 	&& chmod +x /usr/bin/gitlab-ci-multi-runner \
 	&& useradd -m -s /bin/bash gitlab-runner
 
-# ncurses5-compat-libs for libtinfo-5
+# ncurses5-compat-libs
 # using own copy of PKGBUILD as one on AUR is broken
 COPY ncurses5-compat-libs ncurses5-compat-libs
 RUN chmod a+rw ncurses5-compat-libs \
@@ -26,15 +26,6 @@ RUN chmod a+rw ncurses5-compat-libs \
 	&& pacman -U --noconfirm ncurses5-compat-libs-*.pkg.tar.xz \
 	&& cd .. \
 	&& rm -rf ncurses5-compat-libs
-
-# libtinfo-5 from AUR, needed for ghc-7.10.2
-RUN git clone https://aur.archlinux.org/libtinfo-5.git libtinfo \
-	&& chmod a+rw libtinfo \
-	&& cd libtinfo \
-	&& sudo -u nobody makepkg -c \
-	&& pacman -U --noconfirm libtinfo-*.pkg.tar.xz \
-	&& cd .. \
-	&& rm -rf libtinfo
 
 # libtinfo from AUR
 RUN git clone https://aur.archlinux.org/libtinfo.git libtinfo \
