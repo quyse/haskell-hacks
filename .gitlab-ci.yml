@@ -11,5 +11,5 @@ variables:
 build:
   stage: build
   script:
-    - "docker build -t $REPO -f Dockerfile_arch ."
+    - "docker build -t $REPO -f haskell-build-ghcjs-runner/Dockerfile_arch haskell-build-ghcjs-runner"
     - "docker push $REPO:latest"
