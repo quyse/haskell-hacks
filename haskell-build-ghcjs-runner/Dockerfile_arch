@@ -52,16 +52,18 @@ WORKDIR /home/gitlab-runner
 # add config.yaml
 RUN mkdir .stack && /bin/echo -e 'build:\n  split-objs: true\n' > .stack/config.yaml
 
+# ghcjs is disabled: it's not installable yet with GHC 8
+
 # install ghcjs
-COPY ghcjs-setup.yaml ghcjs-setup.yaml
-RUN stack setup --stack-yaml ghcjs-setup.yaml
+# COPY ghcjs-setup.yaml ghcjs-setup.yaml
+# RUN stack setup --stack-yaml ghcjs-setup.yaml
 
 # patch ghcjs script to add some options
-COPY ghcjs.patch ghcjs.patch
-RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-7.10.3/bin/ghcjs < ghcjs.patch
+# COPY ghcjs.patch ghcjs.patch
+# RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-7.10.3/bin/ghcjs < ghcjs.patch
 
 # install hscolour for haddocks, and hlint
-RUN stack install hscolour hlint
+RUN stack install --resolver nightly hscolour hlint
 
 # install butler
 RUN curl -Lo /home/gitlab-runner/.local/bin/butler https://dl.itch.ovh/butler/linux-amd64/head/butler \

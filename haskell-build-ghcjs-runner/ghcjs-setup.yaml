@@ -1,7 +1,7 @@
-resolver: lts-5.14
-compiler: ghcjs-0.2.0_ghc-7.10.3
+resolver: nightly-2016-08-12
+compiler: ghcjs-0.2.0_ghc-8.0.1
 setup-info:
   ghcjs:
     source:
-      ghcjs-0.2.0_ghc-7.10.3:
-        url: "http://ghcjs.luite.com/master.tar.gz"
+      ghcjs-0.2.0_ghc-8.0.1:
+        url: "http://ghcjs.luite.com/ghc-8.0.tar.gz"
