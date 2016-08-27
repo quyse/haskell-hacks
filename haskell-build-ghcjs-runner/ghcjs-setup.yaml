@@ -1,7 +1,9 @@
-resolver: nightly-2016-08-12
+resolver: nightly-2016-08-26
 compiler: ghcjs-0.2.0_ghc-8.0.1
+compiler-check: match-exact
 setup-info:
   ghcjs:
     source:
       ghcjs-0.2.0_ghc-8.0.1:
-        url: "http://ghcjs.luite.com/ghc-8.0.tar.gz"
+        url: "http://tolysz.org/ghcjs/ghc-8.0-2016-08-26-nightly-2016-08-26-820160826.tar.gz"
+        sha1: "2ecd8523cafe22b3033726363b4acc5356117970"

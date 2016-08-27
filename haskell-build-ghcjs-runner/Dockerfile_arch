@@ -10,8 +10,7 @@ FROM base/archlinux
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -S --noconfirm pacman
 RUN pacman-db-upgrade
-RUN pacman -Su --noconfirm
-RUN pacman -S --noconfirm autoconf gcc make alex happy git binutils pkg-config ghc stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch
+RUN pacman -Su --noconfirm autoconf gcc make alex happy git binutils pkg-config ghc stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch
 
 # install gitlab-ci-multi-runner
 RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64 \
@@ -52,18 +51,16 @@ WORKDIR /home/gitlab-runner
 # add config.yaml
 RUN mkdir .stack && /bin/echo -e 'build:\n  split-objs: true\n' > .stack/config.yaml
 
-# ghcjs is disabled: it's not installable yet with GHC 8
-
 # install ghcjs
-# COPY ghcjs-setup.yaml ghcjs-setup.yaml
-# RUN stack setup --stack-yaml ghcjs-setup.yaml
+COPY ghcjs-setup.yaml ghcjs-setup.yaml
+RUN stack setup --stack-yaml ghcjs-setup.yaml
 
 # patch ghcjs script to add some options
-# COPY ghcjs.patch ghcjs.patch
-# RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-7.10.3/bin/ghcjs < ghcjs.patch
+COPY ghcjs.patch ghcjs.patch
+RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-8.0.1/bin/ghcjs < ghcjs.patch
 
 # install hscolour for haddocks, and hlint
-RUN stack install --resolver nightly hscolour hlint
+RUN stack install --resolver nightly-2016-08-26 hscolour hlint
 
 # install butler
 RUN curl -Lo /home/gitlab-runner/.local/bin/butler https://dl.itch.ovh/butler/linux-amd64/head/butler \

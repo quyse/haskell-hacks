@@ -1,8 +1,8 @@
---- ghcjs_a	2016-05-07 12:05:03.275703690 +0300
-+++ ghcjs_b	2016-05-07 12:04:52.198865675 +0300
+--- ghcjs_a	2016-08-27 16:06:41.303311834 +0300
++++ ghcjs_b	2016-08-27 16:07:23.000766257 +0300
 @@ -5,4 +5,4 @@
  
- topdir="/home/gitlab-runner/.ghcjs/x86_64-linux-0.2.0-7.10.2/ghcjs"
- executablename="/home/gitlab-runner/.stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-7.10.3/src/.stack-work/install/x86_64-linux/lts-3.6/7.10.2/bin/ghcjs-0.2.0-7.10.2.bin"
+ topdir="/home/gitlab-runner/.ghcjs/x86_64-linux-0.2.0.820160826-8.0.1/ghcjs"
+ executablename="/home/gitlab-runner/.stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-8.0.1/src/.stack-work/install/x86_64-linux/nightly-2016-08-26/8.0.1/bin/ghcjs-0.2.0.820160826-8.0.1.bin"
 -exec "$executablename" -B"$topdir" ${1+"$@"}
 +exec "$executablename" -B"$topdir" -O3 -Wall -fno-warn-tabs ${1+"$@"}
