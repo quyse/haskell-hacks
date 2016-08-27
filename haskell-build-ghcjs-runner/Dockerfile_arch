@@ -44,6 +44,9 @@ RUN /bin/echo -e '#!/bin/sh\nuglifyjs $1 --screw-ie8 --mangle --compress --wrap 
 # add local bin to profile
 RUN /bin/echo -e '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin' > /etc/profile.d/localbin.sh
 
+# set locale (otherwise haddock may fail with hGetContents: invalid argument error)
+RUN /bin/echo -e 'LANG=en_US.UTF-8\n' > /etc/locale.conf
+
 # following installations doesn't require root
 USER gitlab-runner
 WORKDIR /home/gitlab-runner
