@@ -28,6 +28,13 @@ RUN ./aur_install.sh ncurses5-compat-libs
 # libtinfo from AUR
 RUN ./aur_install.sh libtinfo
 
+# android stuff from AUR
+RUN ./aur_install.sh android-sdk
+RUN ./aur_install.sh android-ndk
+RUN ./aur_install.sh android-sdk-build-tools
+RUN ./aur_install.sh android-sdk-platform-tools
+RUN ./aur_install.sh android-platform
+
 # uglify-js
 RUN npm install -g uglify-js
 # minifyjs script
@@ -62,13 +69,6 @@ RUN curl -Lo /home/gitlab-runner/.local/bin/butler https://dl.itch.ovh/butler/li
 	&& chmod +x /home/gitlab-runner/.local/bin/butler
 # copy butler credentials
 COPY butler_creds /home/gitlab-runner/.config/itch/butler_creds
-
-# install android stuff
-RUN ./aur_install.sh android-sdk
-RUN ./aur_install.sh android-ndk
-RUN ./aur_install.sh android-sdk-build-tools
-RUN ./aur_install.sh android-sdk-platform-tools
-RUN ./aur_install.sh android-platform
 
 # finalize
 CMD ["gitlab-ci-multi-runner", "run", "--user=gitlab-runner", "--working-directory=/home/gitlab-runner"]
