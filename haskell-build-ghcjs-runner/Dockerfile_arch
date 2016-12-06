@@ -63,6 +63,13 @@ RUN curl -Lo /home/gitlab-runner/.local/bin/butler https://dl.itch.ovh/butler/li
 # copy butler credentials
 COPY butler_creds /home/gitlab-runner/.config/itch/butler_creds
 
+# install android stuff
+RUN ./aur_install.sh android-sdk
+RUN ./aur_install.sh android-ndk
+RUN ./aur_install.sh android-sdk-build-tools
+RUN ./aur_install.sh android-sdk-platform-tools
+RUN ./aur_install.sh android-platform
+
 # finalize
 CMD ["gitlab-ci-multi-runner", "run", "--user=gitlab-runner", "--working-directory=/home/gitlab-runner"]
 VOLUME ["/etc/gitlab-runner"]
