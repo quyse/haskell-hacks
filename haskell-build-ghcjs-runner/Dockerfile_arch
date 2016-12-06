@@ -7,6 +7,10 @@
 
 FROM base/archlinux
 
+# enable multilib
+RUN /bin/echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf
+
+# install packages stuff
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -S --noconfirm pacman
 RUN pacman-db-upgrade
