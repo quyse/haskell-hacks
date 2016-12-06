@@ -10,7 +10,9 @@ FROM base/archlinux
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -S --noconfirm pacman
 RUN pacman-db-upgrade
-RUN pacman -Su --noconfirm autoconf gcc make alex happy git binutils pkg-config ghc stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader
+RUN pacman -Su --noconfirm \
+	autoconf gcc make alex happy git binutils pkg-config ghc stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader \
+	apache-ant jdk8-openjdk lib32-alsa-lib lib32-openal lib32-libstdc++5 lib32-libxv lib32-mesa lib32-ncurses lib32-sdl lib32-zlib lib32-fontconfig lib32-libpulse swt
 
 # install gitlab-ci-multi-runner
 RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64 \
