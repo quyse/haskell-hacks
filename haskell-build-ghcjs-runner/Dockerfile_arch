@@ -17,24 +17,16 @@ RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-down
 	&& chmod +x /usr/bin/gitlab-ci-multi-runner \
 	&& useradd -m -s /bin/bash gitlab-runner
 
+# script for installing from AUR
+COPY aur_install.sh aur_install.sh
+
 # ncurses5-compat-libs
 # using own copy of PKGBUILD as one on AUR is broken
 COPY ncurses5-compat-libs ncurses5-compat-libs
-RUN chmod a+rw ncurses5-compat-libs \
-	&& cd ncurses5-compat-libs \
-	&& sudo -u nobody makepkg -c \
-	&& pacman -U --noconfirm ncurses5-compat-libs-*.pkg.tar.xz \
-	&& cd .. \
-	&& rm -rf ncurses5-compat-libs
+RUN ./aur_install.sh ncurses5-compat-libs
 
 # libtinfo from AUR
-RUN git clone https://aur.archlinux.org/libtinfo.git libtinfo \
-	&& chmod a+rw libtinfo \
-	&& cd libtinfo \
-	&& sudo -u nobody makepkg -c \
-	&& pacman -U --noconfirm libtinfo-*.pkg.tar.xz \
-	&& cd .. \
-	&& rm -rf libtinfo
+RUN ./aur_install.sh libtinfo
 
 # uglify-js
 RUN npm install -g uglify-js
