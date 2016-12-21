@@ -37,13 +37,6 @@ RUN ./aur_install.sh ncurses5-compat-libs
 # libtinfo from AUR
 RUN ./aur_install.sh libtinfo
 
-# android stuff from AUR
-RUN ./aur_install.sh android-sdk
-RUN ./aur_install.sh android-ndk
-RUN ./aur_install.sh android-sdk-build-tools
-RUN ./aur_install.sh android-sdk-platform-tools
-RUN ./aur_install.sh android-platform
-
 # uglify-js
 RUN npm install -g uglify-js
 # minifyjs script
