@@ -69,8 +69,6 @@ RUN stack install --resolver nightly-2016-08-26 hscolour hlint
 # install butler
 RUN curl -Lo /home/gitlab-runner/.local/bin/butler https://dl.itch.ovh/butler/linux-amd64/head/butler \
 	&& chmod +x /home/gitlab-runner/.local/bin/butler
-# copy butler credentials
-COPY butler_creds /home/gitlab-runner/.config/itch/butler_creds
 
 # finalize
 CMD ["gitlab-ci-multi-runner", "run", "--user=gitlab-runner", "--working-directory=/home/gitlab-runner"]
