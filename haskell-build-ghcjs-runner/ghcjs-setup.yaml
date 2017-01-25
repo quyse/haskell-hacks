@@ -1,4 +1,4 @@
-resolver: nightly
+resolver: nightly-2017-01-25
 compiler: ghcjs-0.2.0_ghc-8.0.2
 compiler-check: match-exact
 setup-info:
