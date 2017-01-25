@@ -17,7 +17,7 @@ RUN pacman-db-upgrade
 RUN pacman -Su --noconfirm
 RUN yes | pacman -S gcc-multilib
 RUN pacman -S --noconfirm \
-	autoconf make alex happy git binutils pkg-config ghc stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader \
+	autoconf make alex happy git binutils pkg-config stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader \
 	clang lib32-clang lib32-sdl2 zip emscripten python \
 	apache-ant jdk8-openjdk lib32-alsa-lib lib32-openal lib32-libstdc++5 lib32-libxv lib32-mesa lib32-ncurses lib32-sdl lib32-zlib lib32-fontconfig lib32-libpulse swt
 
@@ -61,10 +61,10 @@ RUN stack setup --stack-yaml ghcjs-setup.yaml
 
 # patch ghcjs script to add some options
 COPY ghcjs.patch ghcjs.patch
-RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-8.0.1/bin/ghcjs < ghcjs.patch
+RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-8.0.2/bin/ghcjs < ghcjs.patch
 
 # install hscolour for haddocks, and hlint
-RUN stack install --resolver nightly-2016-08-26 hscolour hlint
+RUN stack install hscolour hlint
 
 # install butler
 RUN curl -Lo /home/gitlab-runner/.local/bin/butler https://dl.itch.ovh/butler/linux-amd64/head/butler \
