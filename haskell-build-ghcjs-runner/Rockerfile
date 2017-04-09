@@ -10,10 +10,7 @@ FROM base/archlinux
 RUN /bin/echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf
 
 # install packages stuff
-RUN pacman -Sy --noconfirm archlinux-keyring
-RUN pacman -S --noconfirm pacman
-RUN pacman-db-upgrade
-RUN pacman -Su --noconfirm
+RUN pacman -Syu --noconfirm
 RUN yes | pacman -S gcc-multilib
 RUN pacman -S --noconfirm \
 	autoconf make alex happy git grep pkg-config stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader \
@@ -82,8 +79,10 @@ RUN /bin/echo -e '#!/bin/sh\nuglifyjs $1 --screw-ie8 --mangle --compress --wrap 
 # add local bin to profile
 RUN /bin/echo -e '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin' > /etc/profile.d/localbin.sh
 
-# set locale (otherwise haddock may fail with hGetContents: invalid argument error)
-RUN /bin/echo -e 'LANG=en_US.UTF-8\n' > /etc/locale.conf
+# set locale (needed for GHC-8, also haddock)
+RUN /bin/echo -e 'LANG=en_US.UTF-8\n' > /etc/locale.conf && \
+	/bin/echo -e 'en_US.UTF-8 UTF-8\n' >> /etc/locale.gen && \
+	locale-gen
 
 # following installations doesn't require root
 USER runner
@@ -99,7 +98,7 @@ RUN mkdir -p .stack/programs/x86_64-linux/place && \
 	cd ghc-8.0.2 && \
 	./configure --prefix=/home/runner/.stack/programs/x86_64-linux/ghc-8.0.2 && \
 	make install && \
-	echo installed > ../ghc-8.0.2.installed && \
+	echo installed > /home/runner/.stack/programs/x86_64-linux/ghc-8.0.2.installed && \
 	cd ../.. && \
 	rm -r place && \
 	cd
@@ -114,8 +113,11 @@ RUN mkdir -p .stack/programs/x86_64-linux/place && \
 #COPY ghcjs.patch ghcjs.patch
 #RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-8.0.1/bin/ghcjs < /data/ghcjs.patch
 
+# create local bin
+RUN mkdir -p /home/runner/.local/bin
+
 # install hscolour for haddocks, and hlint
-RUN stack install hscolour hlint
+#RUN stack install hscolour hlint
 
 # install butler
 RUN curl -Lo /home/runner/.local/bin/butler https://dl.itch.ovh/butler/linux-amd64/head/butler \
