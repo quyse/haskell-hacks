@@ -14,6 +14,12 @@ variables:
 build:
   stage: build
   script:
-  - "rocker build -f haskell-build-ghcjs-runner/Rockerfile haskell-build-ghcjs-runner"
+  - "mkdir logs"
+  - "rocker build -f haskell-build-ghcjs-runner/Rockerfile haskell-build-ghcjs-runner > logs/build.out 2> logs/build.err"
   - "docker tag haskell-build-runner:latest $REPO:$TAG"
   - "docker push $REPO:$TAG"
+  artifacts:
+    paths:
+    - logs
+    when: on_failure
+    expire_in: "1 week"
