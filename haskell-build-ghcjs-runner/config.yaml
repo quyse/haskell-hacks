@@ -1,0 +1,10 @@
+ghc-options:
+  "*": -O3 -threaded -with-rtsopts=-N -Wall -fno-warn-unsupported-calling-conventions -fno-warn-tabs -fexternal-interpreter
+
+rebuild-ghc-options: true
+apply-ghc-options: everything
+
+dump-logs: all
+
+build:
+  split-objs: true
