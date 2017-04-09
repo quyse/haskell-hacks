@@ -4,6 +4,8 @@ services:
 
 before_script:
 - "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com"
+- "mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2"
+- "curl -SL https://github.com/grammarly/rocker/releases/download/1.3.0/rocker_linux_amd64.tar.gz | tar -xzC /usr/bin"
 
 variables:
   REPO: registry.gitlab.com/quyse/haskell-hacks
@@ -12,5 +14,6 @@ variables:
 build:
   stage: build
   script:
-    - "docker build -t $REPO -f haskell-build-ghcjs-runner/Dockerfile_arch haskell-build-ghcjs-runner"
-    - "docker push $REPO:latest"
+  - "rocker build -f haskell-build-ghcjs-runner/Rockerfile haskell-build-ghcjs-runner"
+  - "docker tag haskell-build-runner:latest $REPO:latest"
+  - "docker push $REPO:latest"
