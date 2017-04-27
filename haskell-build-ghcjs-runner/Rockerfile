@@ -14,7 +14,7 @@ RUN pacman -Syu --noconfirm
 RUN yes | pacman -S gcc-multilib
 RUN pacman -S --noconfirm \
 	autoconf make alex happy git grep pkg-config stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader \
-	clang lib32-clang lib32-sdl2 zip emscripten python \
+	clang lib32-clang lib32-sdl2 zip emscripten python file which \
 	apache-ant jdk8-openjdk lib32-alsa-lib lib32-openal lib32-libstdc++5 lib32-libxv lib32-mesa lib32-ncurses lib32-sdl lib32-zlib lib32-fontconfig lib32-libpulse swt
 
 # script for installing from AUR
@@ -61,10 +61,33 @@ RUN cd ghc && \
 
 RUN cp ghc/ghc-8.0.2-*.tar.xz /data/ghc-8.0.2-integersimple.tar.xz
 
+
+
+################################################### make android ndk toolchain
+FROM haskell-hacks-init:latest
+
+MOUNT opt:/opt
+
+# install android-ndk
+RUN ./aur_install.sh android-ndk
+
+# make toolchain
+RUN /opt/android-ndk/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --stl=libc++ --install-dir=/opt/android-ndk-toolchain-arm
+
+MOUNT .:/data
+
+# install SDL2 for android
+RUN /data/install-android-sdl2.sh
+
+
+
 ################################################### result image
 FROM haskell-hacks-init:latest
 
 MOUNT .:/data
+
+# android ndk toolchain
+COPY android-ndk-toolchain-arm /opt/android-ndk-toolchain-arm
 
 # install gitlab-ci-multi-runner
 RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64 \
