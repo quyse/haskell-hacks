@@ -5,8 +5,8 @@ set -e
 export TOOLCHAIN=/opt/android-ndk-toolchain-arm
 export PATH=$TOOLCHAIN/bin:$PATH
 
-curl -L https://www.libsdl.org/release/SDL2-2.0.4.tar.gz | tar xzf -
-pushd SDL2-2.0.4
+curl -L https://www.libsdl.org/release/SDL2-2.0.5.tar.gz | tar xzf -
+pushd SDL2-2.0.5
 
 CFLAGS='-std=gnu99 -fPIC' ./configure \
 	--host arm-linux-androideabi \
@@ -16,7 +16,7 @@ CFLAGS='-std=gnu99 -fPIC' ./configure \
 	--disable-video-x11 \
 	--disable-video-wayland \
 	--disable-video-opengles1
-make
+make -j$(nproc)
 make install
 popd
-rm -r SDL2-2.0.4
+rm -r SDL2-2.0.5

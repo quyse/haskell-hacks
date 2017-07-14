@@ -14,19 +14,20 @@ RUN pacman -Syu --noconfirm
 RUN yes | pacman -S gcc-multilib
 RUN pacman -S --noconfirm \
 	autoconf make alex happy git grep pkg-config stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader \
-	clang lib32-clang lib32-sdl2 zip emscripten python file which \
-	apache-ant jdk8-openjdk lib32-alsa-lib lib32-openal lib32-libstdc++5 lib32-libxv lib32-mesa lib32-ncurses lib32-sdl lib32-zlib lib32-fontconfig lib32-libpulse swt
+	clang lib32-clang lib32-sdl2 zip emscripten python python2-virtualenv file which \
+	apache-ant jdk8-openjdk lib32-alsa-lib lib32-openal lib32-libstdc++5 lib32-libxv lib32-mesa lib32-ncurses lib32-sdl lib32-zlib lib32-fontconfig lib32-libpulse swt \
+	ansible rsync
 
 # script for installing from AUR
-COPY aur_install.sh aur_install.sh
+COPY aur_install.sh /bin/aur_install.sh
 
 # ncurses5-compat-libs
 # using own copy of PKGBUILD as one on AUR is broken
-COPY ncurses5-compat-libs ncurses5-compat-libs
-RUN ./aur_install.sh ncurses5-compat-libs
+#COPY ncurses5-compat-libs ncurses5-compat-libs
+#RUN aur_install.sh ncurses5-compat-libs
 
 # libtinfo from AUR
-RUN ./aur_install.sh libtinfo
+#RUN aur_install.sh libtinfo
 
 TAG haskell-hacks-init:latest
 
@@ -64,20 +65,20 @@ RUN cp ghc/ghc-8.0.2-*.tar.xz /data/ghc-8.0.2-integersimple.tar.xz
 
 
 ################################################### make android ndk toolchain
-FROM haskell-hacks-init:latest
+#FROM haskell-hacks-init:latest
 
-MOUNT opt:/opt
+#MOUNT opt:/opt
 
 # install android-ndk
-RUN ./aur_install.sh android-ndk
+#RUN aur_install.sh android-ndk
 
 # make toolchain
-RUN /opt/android-ndk/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --stl=libc++ --install-dir=/opt/android-ndk-toolchain-arm
+#RUN /opt/android-ndk/build/tools/make-standalone-toolchain.sh --arch=arm --platform=android-24 --stl=libc++ --install-dir=/opt/android-ndk-toolchain-arm
 
-MOUNT .:/data
+#MOUNT .:/data
 
 # install SDL2 for android
-RUN /data/install-android-sdl2.sh
+#RUN /data/install-android-sdl2.sh
 
 
 
@@ -87,7 +88,7 @@ FROM haskell-hacks-init:latest
 MOUNT .:/data
 
 # android ndk toolchain
-COPY android-ndk-toolchain-arm /opt/android-ndk-toolchain-arm
+#COPY android-ndk-toolchain-arm /opt/android-ndk-toolchain-arm
 
 # install gitlab-ci-multi-runner
 RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-linux-amd64 \
@@ -98,6 +99,9 @@ RUN curl -Lo /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-down
 RUN npm install -g uglify-js
 # minifyjs script
 RUN /bin/echo -e '#!/bin/sh\nuglifyjs $1 --screw-ie8 --mangle --compress --wrap $1 --output $2' > /bin/minifyjs && chmod +x /bin/minifyjs
+
+# rpm tools
+#RUN aur_install.sh rpm-org && aur_install.sh rpmdevtools
 
 # add local bin to profile
 RUN /bin/echo -e '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin' > /etc/profile.d/localbin.sh
@@ -145,6 +149,9 @@ RUN mkdir -p /home/runner/.local/bin
 # install butler
 RUN curl -Lo /home/runner/.local/bin/butler https://dl.itch.ovh/butler/linux-amd64/head/butler \
 	&& chmod +x /home/runner/.local/bin/butler
+
+# install fpm
+#RUN gem install --no-ri --no-rdoc -n /home/runner/.local/bin fpm
 
 # finalize
 CMD ["gitlab-ci-multi-runner", "run", "--user=runner", "--working-directory=/home/runner"]
