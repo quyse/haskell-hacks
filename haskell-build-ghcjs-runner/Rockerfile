@@ -37,7 +37,7 @@ TAG haskell-hacks-init:latest
 FROM haskell-hacks-init:latest
 
 # install tools
-RUN pacman -S --noconfirm --needed ghc cabal-install
+RUN pacman -S --noconfirm --needed ghc-static
 
 # get sources
 RUN \
@@ -123,9 +123,9 @@ RUN mkdir -p .stack/programs/x86_64-linux/place && \
 	cd .stack/programs/x86_64-linux/place && \
 	tar -xf /data/ghc-8.0.2-integersimple.tar.xz && \
 	cd ghc-8.0.2 && \
-	./configure --prefix=/home/runner/.stack/programs/x86_64-linux/ghc-8.0.2 && \
+	./configure --prefix=/home/runner/.stack/programs/x86_64-linux/ghc-ncurses6-nopie-8.0.2 && \
 	make install && \
-	echo installed > /home/runner/.stack/programs/x86_64-linux/ghc-8.0.2.installed && \
+	echo installed > /home/runner/.stack/programs/x86_64-linux/ghc-ncurses6-nopie-8.0.2.installed && \
 	cd ../.. && \
 	rm -r place && \
 	cd
