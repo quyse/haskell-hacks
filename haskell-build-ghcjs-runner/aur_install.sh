@@ -10,7 +10,7 @@ fi
 
 chmod a+rw /tmp/aur-$PKG
 pushd /tmp/aur-$PKG
-sudo -u nobody makepkg -c
+sudo -u nobody MAKEFLAGS="-j$(nproc)" makepkg -c
 pacman -U --noconfirm $PKG-*.pkg.tar.xz
 popd
 rm -rf /tmp/aur-$PKG
