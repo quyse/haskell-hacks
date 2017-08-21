@@ -13,8 +13,8 @@ RUN /bin/echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacm
 RUN pacman -Syu --noconfirm
 RUN yes | pacman -S gcc-multilib
 RUN pacman -S --noconfirm \
-	autoconf make alex happy git grep pkg-config stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader \
-	clang lib32-clang lib32-sdl2 zip emscripten python python2-virtualenv file which \
+	autoconf make alex happy git grep pkg-config stack sdl2 openal ffmpeg nasm automake nodejs npm sudo fakeroot patch pandoc vulkan-icd-loader openssh \
+	clang lib32-clang lib32-sdl2 zip emscripten python python2-virtualenv file which boost \
 	apache-ant jdk8-openjdk lib32-alsa-lib lib32-openal lib32-libstdc++5 lib32-libxv lib32-mesa lib32-ncurses lib32-sdl lib32-zlib lib32-fontconfig lib32-libpulse swt \
 	ansible rsync
 
@@ -28,6 +28,9 @@ COPY aur_install.sh /bin/aur_install.sh
 
 # libtinfo from AUR
 #RUN aur_install.sh libtinfo
+
+# lib32-boost-libs from AUR
+RUN /bin/aur_install.sh lib32-boost-libs
 
 TAG haskell-hacks-init:latest
 
