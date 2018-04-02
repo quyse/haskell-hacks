@@ -143,8 +143,8 @@ RUN mkdir -p .stack/programs/x86_64-linux/place && \
 #COPY ghcjs.patch ghcjs.patch
 #RUN patch .stack/programs/x86_64-linux/ghcjs-0.2.0_ghc-8.0.1/bin/ghcjs < /data/ghcjs.patch
 
-# create local bin
-RUN mkdir -p /home/runner/.local/bin
+# create local bin and lib
+RUN mkdir -p /home/runner/.local/{bin,lib}
 
 # install hscolour for haddocks, and hlint
 #RUN stack install hscolour hlint

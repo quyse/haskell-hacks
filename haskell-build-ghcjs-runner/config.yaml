@@ -1,10 +1,7 @@
-ghc-options:
-  "*": -O3 -threaded -with-rtsopts=-N -Wall -fno-warn-unsupported-calling-conventions -fno-warn-tabs
-
-rebuild-ghc-options: true
-apply-ghc-options: everything
-
 dump-logs: all
 
 build:
   split-objs: true
+
+extra-lib-dirs:
+- /home/runner/.local/lib
