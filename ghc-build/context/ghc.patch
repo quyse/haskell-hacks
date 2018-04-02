@@ -1,0 +1,32 @@
+diff --git a/mk/build.mk.sample b/mk/build.mk.sample
+index ce7b4d65bf..76e9da667f 100644
+--- a/mk/build.mk.sample
++++ b/mk/build.mk.sample
+@@ -8,7 +8,7 @@
+ # Uncomment one of these to select a build profile below:
+ 
+ # Full build with max optimisation and everything enabled (very slow build)
+-#BuildFlavour = perf
++BuildFlavour = perf
+ 
+ # As above but build GHC using the LLVM backend
+ #BuildFlavour = perf-llvm
+@@ -112,3 +112,5 @@ endif
+ 
+ # Don't strip debug and other unneeded symbols from libraries and executables.
+ STRIP_CMD = :
++
++INTEGER_LIBRARY=integer-simple
+diff --git a/mk/config.mk.in b/mk/config.mk.in
+index e5ec04a195..2ac5649385 100644
+--- a/mk/config.mk.in
++++ b/mk/config.mk.in
+@@ -250,7 +250,7 @@ ExtraMakefileSanityChecks = NO
+ # Options for Libraries
+ 
+ # Which directory (in libraries/) contains the integer library?
+-INTEGER_LIBRARY=integer-gmp
++INTEGER_LIBRARY=integer-simple
+ 
+ # We build the libraries at least the "vanilla" way (way "v")
+ # Technically we don't need the v way if DYNAMIC_GHC_PROGRAMS is YES,
