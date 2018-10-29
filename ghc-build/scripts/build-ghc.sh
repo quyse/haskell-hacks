@@ -2,7 +2,7 @@
 
 set -e
 
-VERSION=8.4.2
+VERSION=8.4.3
 
 # get sources
 git config --global url."git://github.com/ghc/packages-".insteadOf     git://github.com/ghc/packages/
@@ -14,7 +14,7 @@ git clone https://github.com/ghc/ghc.git -b ghc-$VERSION-release --depth 1 --rec
 
 # configure and make
 pushd ghc
-patch -p1 < ~/ghc.patch
+patch -p1 < /data/ghc.patch
 cp mk/build.mk{.sample,}
 ./boot
 ./configure
