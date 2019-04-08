@@ -2,7 +2,8 @@
 
 set -e
 
-VERSION=8.4.3
+VERSION=8.6.4
+BRANCH=ghc-$VERSION-release
 
 # get sources
 git config --global url."git://github.com/ghc/packages-".insteadOf     git://github.com/ghc/packages/
@@ -10,7 +11,7 @@ git config --global url."http://github.com/ghc/packages-".insteadOf    http://gi
 git config --global url."https://github.com/ghc/packages-".insteadOf   https://github.com/ghc/packages/
 git config --global url."ssh://git@github.com/ghc/packages-".insteadOf ssh://git@github.com/ghc/packages/
 git config --global url."git@github.com:/ghc/packages-".insteadOf      git@github.com:/ghc/packages/
-git clone https://github.com/ghc/ghc.git -b ghc-$VERSION-release --depth 1 --recursive
+git clone https://github.com/ghc/ghc.git -b $BRANCH --depth 1 --recursive
 
 # configure and make
 pushd ghc
